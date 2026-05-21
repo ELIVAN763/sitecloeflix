@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elivanflix | Domine a Automação</title>
+    <style>
+        :root {
+            --primary: #e50914;
+            --background: #141414;
+            --surface: #1f1f1f;
+            --text: #ffffff;
+            --text-secondary: #b3b3b3;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+             background-image: url('img/lua.jpg');
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            z-index: 1000;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            text-decoration: none;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .btn-cta {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 5%;
+            background: linear-gradient(to right, rgba(0,0,0,0.9) 20%, transparent), 
+                        url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 { font-size: 4rem; margin-bottom: 15px; max-width: 700px; line-height: 1.1; }
+        .hero p { font-size: 1.3rem; max-width: 550px; color: var(--text-secondary); margin-bottom: 30px; }
+
+        .section-title { padding: 40px 5% 10px; font-size: 1.6rem; font-weight: bold; }
+
+        .carousel {
+            display: flex;
+            gap: 20px;
+            padding: 30px 5% 60px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .carousel::-webkit-scrollbar { display: none; }
+
+        /* CARDS COM IMAGEM DE FUNDO */
+        .card {
+            min-width: 280px;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: all 0.4s ease;
+        }
+
+        /* Overlay escuro para destacar o texto */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 70%);
+            z-index: 1;
+        }
+
+        .card:hover { 
+            transform: scale(1.05) translateY(-10px); 
+            z-index: 10; 
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.5);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 15px;
+        }
+
+        .card h3 { margin: 0; font-size: 1.1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+        .card p { margin: 5px 0 0; font-size: 0.75rem; color: var(--primary); font-weight: bold; }
+
+        /* Estilização dos Planos */
+        .plans {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 60px 5% 100px;
+            flex-wrap: wrap;
+        }
+
+        .plan-card {
+            background: #181818;
+            border: 2px solid #333;
+            padding: 40px;
+            width: 300px;
+            text-align: center;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+        }
+
+        .plan-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-12px);
+            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.3);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 80px 5%;
+            background: #000;
+        }
+
+        footer {
+            padding: 60px 5%;
+            border-top: 1px solid #333;
+            text-align: center;
+            background: #000;
+        }
+
+        .newsletter input {
+            padding: 15px; width: 300px; border: none; border-radius: 4px 0 0 4px; background: #333; color: white;
+        }
+
+        .newsletter button {
+            padding: 15px 25px; border: none; background: var(--primary); color: white; border-radius: 0 4px 4px 0; font-weight: bold; cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .card { min-width: 220px; height: 130px; }
+            .plan-card { width: 100%; }
+        }
+      
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">ELIVANFLIX</a>
+        <nav>
+            <a href="#cursos">Cursos</a>
+            <a href="#planos">Planos</a>
+            <a href="cadastro.html" class="btn-cta">ASSINE AGORA</a>
+            <a href="index.html.html" class="btn-cta">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Domine o código. Automatize o futuro.</h1>
+            <p>A única plataforma estilo streaming focada em transformar você em um especialista em automação.</p>
+            <a href="videos.html" class="btn-cta" style="padding: 18px 45px; font-size: 1.2rem;">ASSISTIR AGORA</a>
+        </section>
+
+        <h2 class="section-title" id="cursos">Séries Originais de Programação</h2>
+        <div class="carousel" id="movieRow">
+            <!-- Cards com Imagens do Unsplash (Temas Tech) -->
+            <div class="card" style="background-image: url('img/tela.jpg');">
+                <div class="card-content"><h3>Automação Selenium</h3><p>SÉRIE ORIGINAL</p></div>
+            </div>
+            <div class="card" style="background-image: url('img/placa.jpg');">
+                <div class="card-content"><h3>Lógica do Zero</h3><p>ESTREIA</p></div>
+            </div>
+            <div class="card" style="background-image: url('img/ia.jpg');">
+                <div class="card-content"><h3>Webhooks & APIs</h3><p>ALTA FIDELIDADE</p></div>
+            </div>
+            <div class="card" style="background-image: url('img/robotica.jpg');">
+                <div class="card-content"><h3>Node.js Backend</h3><p>SÉRIE COMPLETA</p></div>
+            </div>
+            <div class="card" style="background-image: url('img/logica.jpg');">
+                <div class="card-content"><h3>Python para RPA</h3><p>TOP 1 HOJE</p></div>
+            </div>
+            <div class="card" style="background-image: url('img/sql.jpg');">
+                <div class="card-content"><h3>SQL para Dados</h3><p>DOCUMENTÁRIO</p></div>
+            </div>
+            <div class="card" style="background-image: url('img/moca.jpg');">
+                <div class="card-content"><h3>DevOps Básico</h3><p>MINISSÉRIE</p></div>
+            </div>
+        </div>
+
+        <section class="features">
+            <div class="feature-item">
+                <h3>Foco Prático</h3>
+                <p>Chega de teoria maçante. Aqui você constrói automações reais desde o primeiro episódio.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Streaming Offline</h3>
+                <p>Baixe as aulas e estude sem internet através do nosso aplicativo exclusivo.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Comunidade VIP</h3>
+                <p>Acesse o grupo secreto para tirar dúvidas e compartilhar scripts com outros alunos.</p>
+            </div>
+        </section>
+
+        <h2 style="text-align: center; margin-top: 50px;" id="planos">Escolha seu Acesso</h2>
+        <section class="plans">
+            <div class="plan-card">
+                <h3>Starter</h3>
+                <h2>R$ 49,90<small>/mês</small></h2>
+                <p>Acesso a todos os cursos básicos e intermediários.</p><br>
+                <a href="#" class="btn-cta">Assinar Plano</a>
+            </div>
+            <div class="plan-card">
+                <h3>Premium</h3>
+                <h2>R$ 89,90<small>/mês</small></h2>
+                <p>Acesso total + Mentorias mensais ao vivo + Certificados.</p><br>
+                <a href="#" class="btn-cta">Assinar Premium</a>
+            </div>
+            <div class="plan-card">
+                <h3>VIP</h3>
+                <h2>R$ 197<small>/mês</small></h2>
+                <p>Suporte individual direto com o Elivan e Projetos Exclusivos.</p><br>
+                <a href="#" class="btn-cta">Assinar VIP</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="newsletter">
+            <p>Receba scripts gratuitos e avisos de novos lançamentos:</p>
+            <input type="email" placeholder="E-mail do futuro dev">
+            <button>Quero Scripts</button>
+        </div>
+        <p style="margin-top: 40px; font-size: 0.8rem;">© 2024 Elivanflix - Onde o código vira arte. Feito para automatizadores.</p>
+    </footer>
+
+    <script>
+        
+        const scrollContainer = document.getElementById("movieRow");
+        scrollContainer.addEventListener("wheel", (evt) => {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        }, { passive: false });
+    
+
+    </script>
+    
+    <h3 class="faq-title2">Quer se inscrever acesse o botão e digite seu email para fazer parte da ELIVANFLIX?</h3>
+
+
+</body>
+</html>
